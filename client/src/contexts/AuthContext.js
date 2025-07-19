@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API_CONFIG from '../config/api';
 
 const AuthContext = createContext();
 
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   // Set up axios defaults
   useEffect(() => {
+    axios.defaults.baseURL = API_CONFIG.baseURL;
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {

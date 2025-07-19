@@ -177,4 +177,94 @@ This project is licensed under the MIT License.
 
 ## Support
 
-If you encounter any issues or have questions, please open an issue on GitHub. # letscopy
+If you encounter any issues or have questions, please open an issue on GitHub. # Lets Copy - Personal Text Posts Manager
+
+A full-stack MERN application for creating, storing, and managing personal text posts with authentication, categories, and tags.
+
+## 🚀 Features
+
+- **User Authentication** - JWT-based login/register system
+- **Post Management** - Create, edit, delete, and organize posts
+- **Categories & Tags** - Organize posts with categories and tags
+- **Copy to Clipboard** - One-click copy functionality
+- **Search & Filter** - Find posts quickly with search and filters
+- **Responsive Design** - Mobile-first design that works on all devices
+- **Modern UI** - Beautiful glass morphism design with gradients
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React.js, React Router, Axios, React Hot Toast
+- **Backend**: Node.js, Express.js, JWT Authentication
+- **Database**: MongoDB with Mongoose
+- **Styling**: Custom CSS with mobile-first responsive design
+- **Performance**: Code splitting, memoization, caching
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (local or MongoDB Atlas)
+
+### Setup
+1. Clone the repository
+```bash
+git clone https://github.com/moinkhanjsx/letscopy.git
+cd letscopy
+```
+
+2. Install dependencies
+```bash
+npm run install-all
+```
+
+3. Create environment file
+```bash
+# Create .env file in root directory
+JWT_SECRET=your_jwt_secret_here
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+```
+
+4. Start development server
+```bash
+npm run dev
+```
+
+## 🌐 Deployment
+
+### Vercel + Railway Deployment
+
+1. **Deploy Backend to Railway:**
+   - Go to [railway.app](https://railway.app)
+   - Connect your GitHub repository
+   - Add environment variables:
+     - `JWT_SECRET` = your secret key
+     - `MONGODB_URI` = your MongoDB Atlas connection string
+     - `NODE_ENV` = production
+
+2. **Deploy Frontend to Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Add environment variable:
+     - `REACT_APP_API_URL` = your Railway backend URL
+   - Deploy!
+
+## 📱 Usage
+
+1. Register a new account
+2. Create your first post
+3. Add categories and tags for organization
+4. Use the copy button to copy post content
+5. Search and filter your posts
+6. Edit or delete posts as needed
+
+## 🔧 Development
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run server` - Start backend only
+- `npm run client` - Start frontend only
+
+## 📄 License
+
+MIT License
