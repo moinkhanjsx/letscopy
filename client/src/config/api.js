@@ -1,5 +1,7 @@
 // API Configuration for different environments
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://letscopy.onrender.com' 
+  : (process.env.REACT_APP_API_URL || 'http://localhost:5000');
 
 export const API_CONFIG = {
   baseURL: API_BASE_URL,
