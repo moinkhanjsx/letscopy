@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Plus, Copy, Edit, Trash2, Calendar, Search, Filter, Tag, Folder } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import API_CONFIG from '../config/api';
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -13,12 +15,15 @@ const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedTag, setSelectedTag] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const { user, token } = useAuth();
 
   useEffect(() => {
-    fetchPosts();
-    fetchCategories();
-    fetchTags();
-  }, []);
+    if (user) {
+      fetchPosts();
+      fetchCategories();
+      fetchTags();
+    }
+  }, [user]);
 
   // Memoized filtered posts calculation
   const filteredPosts = useMemo(() => {
@@ -48,6 +53,12 @@ const Dashboard = () => {
 
   const fetchPosts = async () => {
     try {
+      // Ensure the baseURL and auth header are set correctly
+      axios.defaults.baseURL = API_CONFIG.baseURL;
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await axios.get('/api/posts');
       setPosts(response.data);
     } catch (error) {
@@ -61,6 +72,12 @@ const Dashboard = () => {
 
   const fetchCategories = async () => {
     try {
+      // Ensure the baseURL and auth header are set correctly
+      axios.defaults.baseURL = API_CONFIG.baseURL;
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await axios.get('/api/posts/categories');
       setCategories(response.data || []);
     } catch (error) {
@@ -71,6 +88,12 @@ const Dashboard = () => {
 
   const fetchTags = async () => {
     try {
+      // Ensure the baseURL and auth header are set correctly
+      axios.defaults.baseURL = API_CONFIG.baseURL;
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await axios.get('/api/posts/tags');
       setTags(response.data || []);
     } catch (error) {

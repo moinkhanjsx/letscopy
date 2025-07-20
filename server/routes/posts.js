@@ -10,10 +10,30 @@ const cache = {
   categories: new Map(),
   tags: new Map(),
   posts: new Map(),
-  clearCache: function() {
-    this.categories.clear();
-    this.tags.clear();
-    this.posts.clear();
+  clearCache: function(userId = null) {
+    if (userId) {
+      // Clear only this user's cache
+      for (const [key, _] of this.posts) {
+        if (key.startsWith(`${userId}:`)) {
+          this.posts.delete(key);
+        }
+      }
+      for (const [key, _] of this.categories) {
+        if (key === `categories:${userId}`) {
+          this.categories.delete(key);
+        }
+      }
+      for (const [key, _] of this.tags) {
+        if (key === `tags:${userId}`) {
+          this.tags.delete(key);
+        }
+      }
+    } else {
+      // Clear all cache
+      this.categories.clear();
+      this.tags.clear();
+      this.posts.clear();
+    }
   }
 };
 
@@ -41,7 +61,7 @@ const cacheMiddleware = (duration = 300000) => { // 5 minutes default
 };
 
 // Get all posts for the authenticated user
-router.get('/', auth, cacheMiddleware(300000), async (req, res) => {
+router.get('/', auth, cacheMiddleware(60000), async (req, res) => { // Reduced cache time to 1 minute
   try {
     const { category, tag, search } = req.query;
     let query = { user: req.user._id };
@@ -192,7 +212,7 @@ router.post('/', [
     await post.save();
 
     // Clear cache for this user
-    cache.clearCache();
+    cache.clearCache(req.user._id);
 
     res.status(201).json(post);
   } catch (error) {
@@ -252,6 +272,9 @@ router.put('/:id', [
       return res.status(404).json({ message: 'Post not found' });
     }
 
+    // Clear cache for this user
+    cache.clearCache(req.user._id);
+
     res.json(post);
   } catch (error) {
     console.error('Update post error:', error);
@@ -275,7 +298,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 
     // Clear cache for this user
-    cache.clearCache();
+    cache.clearCache(req.user._id);
 
     res.json({ message: 'Post deleted successfully' });
   } catch (error) {

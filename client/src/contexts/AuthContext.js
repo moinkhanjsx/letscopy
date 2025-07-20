@@ -20,7 +20,9 @@ export const AuthProvider = ({ children }) => {
 
   // Set up axios defaults
   useEffect(() => {
+    // Always ensure the baseURL is set correctly
     axios.defaults.baseURL = API_CONFIG.baseURL;
+    
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
@@ -33,6 +35,8 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       if (token) {
         try {
+          // Ensure the baseURL is set correctly before making the request
+          axios.defaults.baseURL = API_CONFIG.baseURL;
           const response = await axios.get('/api/auth/me');
           setUser(response.data.user);
         } catch (error) {
@@ -48,6 +52,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      // Ensure the baseURL is set correctly before making the request
+      axios.defaults.baseURL = API_CONFIG.baseURL;
+      
       const response = await axios.post('/api/auth/login', {
         email,
         password
@@ -58,6 +65,9 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(userData);
       localStorage.setItem('token', newToken);
+      
+      // Set authorization header after login
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       
       toast.success('Login successful!');
       return { success: true };
@@ -70,6 +80,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
+      // Ensure the baseURL is set correctly before making the request
+      axios.defaults.baseURL = API_CONFIG.baseURL;
+      
       const response = await axios.post('/api/auth/register', {
         username,
         email,
@@ -81,6 +94,9 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(userData);
       localStorage.setItem('token', newToken);
+      
+      // Set authorization header after registration
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       
       toast.success('Registration successful!');
       return { success: true };
@@ -102,6 +118,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    token,
     login,
     register,
     logout
